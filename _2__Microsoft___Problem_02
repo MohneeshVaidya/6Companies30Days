@@ -1,1 +1,16 @@
-
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        return self.__helper(k, n, 1, [])
+        
+    
+    def __helper(self, k, n, s, comb):
+        if(not k):
+            if(not n):
+                return [comb]
+            return []
+        result = []
+        for i in range(s, 10):
+            if(i > n):
+                break
+            result += self.__helper(k-1, n-i, i+1, comb + [i])
+        return result
