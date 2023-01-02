@@ -1,0 +1,28 @@
+class Solution:
+    def getHint(self, secret: str, guess: str) -> str:
+        d_secret, d_guess = {}, {}
+        n = len(secret)
+        for i in range(n):
+            if(secret[i] not in d_secret):
+                d_secret[secret[i]] = set()
+            d_secret[secret[i]].add(i)
+
+            if(guess[i] not in d_guess):
+                d_guess[guess[i]] = set()
+            d_guess[guess[i]].add(i)
+        bulls, cows = 0, 0
+        for c in d_guess.keys():
+            if(c not in d_secret):
+                continue
+            set1, set2 = list(d_guess[c]), d_secret[c]
+            i = 0
+            while(i < len(set1)):
+                if(set1[i] in set2):
+                    set2.discard(set1[i])
+                    set1.pop(i)
+                    bulls += 1
+                else:
+                    i += 1
+            cows += min(len(set1), len(set2))
+
+        return '{}A{}B'.format(bulls, cows)
