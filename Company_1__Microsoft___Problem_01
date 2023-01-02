@@ -1,0 +1,25 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        qu = []
+        res = 0
+        for c in tokens:
+            if(c not in {'+', '-', '*', '/'}):
+                qu.append(int(c))
+            else:
+                op2 = qu.pop()
+                op1 = qu.pop()
+                res = self.__eval(op1, op2, c)
+                qu.append(res)
+        print(qu)
+        return qu.pop()
+    
+    def __eval(self, op1, op2, oper):
+        match(oper):
+            case '+':
+                return op1 + op2
+            case '-':
+                return op1 - op2
+            case '*':
+                return op1 * op2
+            case '/':
+                return (op1 / op2).__trunc__()
