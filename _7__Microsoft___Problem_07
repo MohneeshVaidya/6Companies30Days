@@ -1,0 +1,29 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = {}
+        for i in range(numCourses):
+            graph[i] = []
+        for x in prerequisites:
+            graph[x[0]].append(x[1])
+        
+        visited1 = [False for i in range(numCourses)]
+        visited2 = [False for i in range(numCourses)]
+
+        for i in range(numCourses):
+            if(not visited1[i]):
+                if(self.__helper(i, graph, visited1, visited2)):
+                    return False
+        return True
+    
+    def __helper(self, node, graph, vis1, vis2):
+        vis1[node] = vis2[node] = True
+
+        for i in graph[node]:
+            if(not vis1[i]):
+                if(self.__helper(i, graph, vis1, vis2)):
+                    return True
+            elif(vis2[i]):
+                return True
+        
+        vis2[node] = False
+        return False
