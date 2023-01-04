@@ -1,0 +1,11 @@
+class Solution:
+    def numberOfPairs(self, nums1: List[int], nums2: List[int], diff: int) -> int:
+        from sortedcontainers import SortedList
+        
+        n = len(nums1)
+        A = SortedList()
+        ans = 0
+        for i in range(n):
+           ans += A.bisect_right(nums1[i]-nums2[i]+diff)
+           A.add(nums1[i]-nums2[i])
+        return ans 
