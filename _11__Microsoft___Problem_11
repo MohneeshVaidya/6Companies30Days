@@ -1,0 +1,33 @@
+class Solution:
+    def countPaths(self, n: int, roads: List[List[int]]) -> int:
+        if(n == 1):
+            return 1
+        graph = {}
+        for u, v, time in roads:
+            if(u not in graph):
+                graph[u] = []
+            graph[u].append((v, time))
+            if(v not in graph):
+                graph[v] = []
+            graph[v].append((u, time))
+        
+        import heapq
+
+        time = [float('inf') for i in range(n)]
+        ways = [0 for i in range(n)]
+        time[0], ans, ways[0] = 0, float('inf'), 1
+
+        heap = [(0, 0)]
+        while(heap):
+            d, u = heapq.heappop(heap)
+            if(time[u] < d):
+                continue
+            for v, t in graph[u]:
+                if(time[v] > time[u] + t):
+                    time[v] = time[u] + t
+                    ways[v] = ways[u]
+                    heapq.heappush(heap, (time[v], v))
+                elif(time[v] == time[u] + t):
+                    ways[v] = (ways[v] + ways[u]) % (10**9 + 7)
+
+        return ways[n-1]
