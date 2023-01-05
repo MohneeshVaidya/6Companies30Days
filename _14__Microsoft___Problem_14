@@ -1,0 +1,20 @@
+class Solution:
+    def minOperations(self, nums: List[int], numsDivide: List[int]) -> int:
+        gcd = numsDivide[0]
+        for i in range(1, len(numsDivide)):
+            gcd = self.__gcdUtility(gcd, numsDivide[i])
+        nums.sort()
+        res = 0
+        for x in nums:
+            if(x > gcd):
+                break
+            elif(not (gcd % x)):
+                return res
+            res += 1
+        return -1
+
+        
+    def __gcdUtility(self, a, b):
+        if(not b):
+            return a
+        return self.__gcdUtility(b, a%b) if(a >= b) else self.__gcdUtility(a, b%a)
