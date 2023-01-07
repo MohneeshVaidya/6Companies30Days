@@ -1,0 +1,25 @@
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        n = len(nums)
+        if(n < 3):
+            return 0
+        from collections import defaultdict
+        dic   = defaultdict(int)
+        start = []
+        end   = []
+        for num in nums:
+            dic[num] += 1
+        for i in range(n):
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            num = nums[i]
+            currCount, prevCount, nextCount = dic[num], dic[num-1], dic[num+1]
+            for i in range(currCount-prevCount):
+                start.append(num)
+            for i in range(currCount-nextCount):
+                end.append(num)
+        
+        for i in range(len(start)):
+            if(end[i]-start[i] < 2):
+                return False
+        return True
