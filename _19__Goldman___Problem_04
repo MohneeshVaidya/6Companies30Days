@@ -1,0 +1,16 @@
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        n = len(points)
+        if(n < 3):
+            return 0
+        from collections import defaultdict
+        res = 0
+        for x1, y1 in points:
+            dic = defaultdict(lambda: 0)
+            for x2, y2 in points:
+                if((x1, y1) == (x2, y2)):
+                    continue
+                dist = (x2-x1)**2 + (y2-y1)**2
+                res += 2*dic[dist]
+                dic[dist] += 1
+        return res
