@@ -1,0 +1,21 @@
+class Solution:
+    def maximumBobPoints(self, numArrows: int, aliceArrows: List[int]) -> List[int]:
+        from copy import deepcopy
+        def utility(num, h, mem):
+            if(0 == h):
+                return ([num], 0)
+
+            prevArr, prevSum = utility(num, h-1, mem)
+            curr = prevArr + [0]
+            sum_ = prevSum
+            if(aliceArrows[h] < num):
+                tmpArr, tmpSum = utility(num-aliceArrows[h]-1, h-1, mem)
+                tmpArr += [aliceArrows[h]+1]
+                tmpSum += h
+                if(sum_ <= tmpSum):
+                    curr = deepcopy(tmpArr)
+                    sum_ = tmpSum
+
+            return (curr, sum_)
+
+        return utility(numArrows, 11, {})[0]
