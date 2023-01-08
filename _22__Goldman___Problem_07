@@ -1,0 +1,22 @@
+class Solution:
+    def goodTriplets(self, A: List[int], B: List[int]) -> int:
+        from sortedcontainers import SortedList
+        pos = [0] * len(A)               
+        for idx, b in enumerate(B):
+            pos[b] = idx
+        in_b, pre_a = SortedList([pos[A[0]]]), [0]      
+        for a in A[1:]:       
+            in_b.add(pos[a])
+            pre_a.append(in_b.bisect_left(pos[a]))
+    
+        in_b, suf_a = SortedList([pos[A[-1]]]), [0]
+        for a in reversed(A[:len(A)-1]):
+            idx = in_b.bisect(pos[a])
+            suf_a.append(len(in_b) - idx)
+            in_b.add(pos[a])
+        suf_a.reverse()
+
+        ans = 0
+        for x, y in zip(pre_a, suf_a):
+            ans += x * y
+        return ans
