@@ -1,0 +1,18 @@
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        from sortedcontainers import SortedList
+        n = len(profits)
+        projects = SortedList(list(zip(capital, profits)))
+        
+
+        q = []
+        ptr = 0
+        while k:
+            while ptr < n and projects[ptr][0] <= w:
+                heappush(q, -projects[ptr][1])
+                ptr += 1
+            if not q:
+                break
+            w += -heappop(q)
+            k -= 1
+        return w
