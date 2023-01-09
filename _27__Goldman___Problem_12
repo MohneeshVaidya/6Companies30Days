@@ -1,0 +1,17 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
+
+        def utility(root):
+            if not root:
+                return []
+            left = utility(root.left)
+            right = utility(root.right)
+            return left + [root.val] + right
+        
+        return list(sorted(utility(root1)+utility(root2)))
