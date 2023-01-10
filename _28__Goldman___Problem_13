@@ -1,0 +1,37 @@
+class Solution:
+    def getBiggestThree(self, grid: List[List[int]]) -> List[int]:
+        import heapq
+
+        m, n = len(grid), len(grid[0])
+        max_p = (min(m, n)+1)//2
+
+        def utility(num, r, c):
+            res = grid[r][c]
+            if(num == 1):
+                return res
+
+            for i in range(1, num):
+                r, c = r-1, c-1
+                res += grid[r][c]
+            for i in range(1, num):
+                r, c = r-1, c+1
+                res += grid[r][c]
+            for i in range(1, num):
+                r, c = r+1, c+1
+                res += grid[r][c]
+            for i in range(1, num-1):
+                r, c = r+1, c-1
+                res += grid[r][c]
+            
+            return res
+
+        q = []
+        for i in range(1, max_p+1):
+            row_s, col_s, col_e = i*2 - 2, i-1, n-i+1
+            for r in range(row_s, m):
+                for c in range(col_s, col_e):
+                    tmp = utility(i, r, c)
+                    if(len(q) == 3 and q[0] < tmp and (tmp not in q)): heapq.heapreplace(q, tmp)
+                    elif(len(q) < 3 and (tmp not in q)): heapq.heappush(q, tmp)
+        
+        return sorted(q, key=lambda x: -x)
