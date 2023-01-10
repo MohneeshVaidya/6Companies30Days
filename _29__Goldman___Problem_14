@@ -1,0 +1,14 @@
+class Solution:
+    def countNicePairs(self, nums: List[int]) -> int:
+        dic = defaultdict(int)
+
+        def utility(num):
+            return num - int(str(num)[::-1])
+        
+        res = 0
+        for num in nums:
+            tmp = utility(num)
+            res += dic[tmp]
+            dic[tmp] += 1
+        
+        return res % (10**9 + 7)
