@@ -1,0 +1,25 @@
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+
+        q, smaller, larger = [], [None] * len(nums), [None] * len(nums)
+        for i, num in enumerate(nums):
+            while q and nums[q[-1]] >= num:
+                q.pop()
+            
+            smaller[i] = -1 if not q else q[-1]
+            q.append(i)
+        
+        q.clear()
+
+        for i in range(len(nums)-1, -1, -1):
+            num = nums[i]
+            while q and nums[q[-1]] <= num:
+                q.pop()
+            
+            larger[i] = -1 if not q else q[-1]
+            q.append(i)
+
+            if smaller[i] != -1 and larger[i] != -1:
+                return True
+        
+        return False
