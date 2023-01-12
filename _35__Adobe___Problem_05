@@ -1,0 +1,29 @@
+class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+
+        def utility(r, c, k, mem):
+            nonlocal n
+
+            if r < 0 or r >= n or c < 0 or c >= n:
+                return 0
+            elif not k:
+                return 1
+            
+            key = (r, c, k)
+            if key in mem:
+                return mem[key]
+
+            prob  = utility(r-2, c+1, k-1, mem) * 0.125
+            prob += utility(r+1, c+2, k-1, mem) * 0.125
+            prob += utility(r+2, c-1, k-1, mem) * 0.125
+            prob += utility(r-1, c-2, k-1, mem) * 0.125
+
+            prob += utility(r-2, c-1, k-1, mem) * 0.125
+            prob += utility(r-1, c+2, k-1, mem) * 0.125
+            prob += utility(r+2, c+1, k-1, mem) * 0.125
+            prob += utility(r+1, c-2, k-1, mem) * 0.125
+
+            mem[key] = prob
+            return prob
+
+        return utility(row, column, k, {})
