@@ -1,0 +1,17 @@
+class Solution:
+    def maxMatrixSum(self, matrix: List[List[int]]) -> int:
+        arr, negs, smallestAbs = [], [], float("inf")
+        for row in matrix:
+            for x in row:
+                arr.append(x)
+                if x < 0: negs.append(x)
+                smallestAbs = min(smallestAbs, abs(x))
+        
+        res = 0
+        for x in arr:
+            res += x if x >= 0 else -x
+        
+        if not len(negs) % 2:
+            return res
+        
+        return res - 2*smallestAbs
