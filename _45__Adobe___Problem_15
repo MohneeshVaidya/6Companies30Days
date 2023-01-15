@@ -1,0 +1,10 @@
+class Solution:
+    def smallestTrimmedNumbers(self, nums: List[str], queries: List[List[int]]) -> List[int]:
+        from sortedcontainers import SortedList
+
+        ans = []
+        for k, t in queries:
+            sl = SortedList((x for x in enumerate(nums)), key=lambda x: (x[1][-t:], x[0]))
+            ans.append(sl[k-1][0])
+        
+        return ans
