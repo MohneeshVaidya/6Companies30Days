@@ -1,0 +1,44 @@
+class Solution:
+    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+        n = len(price)
+
+        def fill(arr1, arr2):
+            tmp = []
+            for i in range(n):
+                if arr1[i] >= arr2[i]:
+                    tmp.append(arr1[i] - arr2[i])
+                else:
+                    return [], False
+            return tmp, True
+
+        def utility(needs, mem):
+            if sum(needs) == 0:
+                return 0
+            
+            key = tuple(needs)
+            if key in mem:
+                return mem[key]
+            
+            res, tmp = float("inf"), 0
+            arr = []
+            for i in range(n):
+                if needs[i] == 0:
+                    arr.append(0)
+                    continue
+                arr.append(needs[i]-1)
+                tmp += price[i]
+            
+            res = min(res, tmp + utility(arr, mem))
+
+            for spec in special:
+                arr, flag = fill(needs, spec)
+                if not flag:
+                    continue
+                res = min(res, spec[n] + utility(arr, mem))
+            del arr
+
+            mem[key] = res
+            return res
+        
+
+        return utility(needs, {})
