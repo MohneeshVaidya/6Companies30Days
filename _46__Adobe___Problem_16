@@ -1,0 +1,24 @@
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        if (sum(nums) % k) != 0:
+            return False
+        nums.sort(reverse=True)
+        tarSum = sum(nums) // k
+        taken = [False for i in range(len(nums))]
+
+        def utility(i, k, subsetSum):
+            if k == 1:
+                return True
+            if subsetSum == tarSum:
+                return utility(0, k-1, 0)
+            
+            for j in range(i, len(nums)):
+                if not taken[j] and nums[j] + subsetSum <= tarSum:
+                    taken[j] = True
+                    if utility(j+1, k, subsetSum + nums[j]):
+                        return True
+                    taken[j] = False
+            
+            return False
+        
+        return utility(0, k, 0)
