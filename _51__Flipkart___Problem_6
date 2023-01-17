@@ -1,0 +1,29 @@
+# time limit exceed in second-last test case
+
+
+class Solution:
+    def numberOfCombinations(self, num: str) -> int:
+
+        def utility(l, h, prev, mem):
+            if l > h:
+                return 1
+
+            if num[l] == '0':
+                return 0
+            
+            key = (l, prev)
+            if key in mem:
+                return mem[key]
+
+            res = 0
+            for i in range(l, h+1):
+                curr = int(num[l : i+1])
+                if curr < prev:
+                    continue
+                tmp = utility(i+1, h, curr, mem)
+                res += tmp
+
+            mem[key] = res
+            return res
+
+        return utility(0, len(num)-1, -1, {})
