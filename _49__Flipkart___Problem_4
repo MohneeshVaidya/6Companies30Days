@@ -1,0 +1,20 @@
+class Solution:
+    def findTheWinner(self, n: int, k: int) -> int:
+        curr = {i for i in range(n)}
+
+        i = 0
+        while len(curr) > 1:
+            j = 1
+            while j < k:
+                while i not in curr:
+                    i = (i+1) % n
+                
+                i = (i+1) % n
+
+                while i not in curr:
+                    i = (i+1) % n
+                j += 1
+            curr.discard(i)
+            i = (i+1) % n
+        
+        return tuple(curr)[0] + 1
