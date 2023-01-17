@@ -1,0 +1,55 @@
+# """
+# This is MountainArray's API interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class MountainArray:
+#    def get(self, index: int) -> int:
+#    def length(self) -> int:
+
+class Solution:
+    def findInMountainArray(self, target: int, mountain_arr: 'MountainArray') -> int:
+        
+        n = mountain_arr.length()
+
+        def findTop(l, h):
+            while l < h:
+                m = (l+h) // 2
+
+                pre = mountain_arr.get(m-1) if m > 0 else -1
+                cur = mountain_arr.get(m)
+                nex = mountain_arr.get(m+1) if m < n-1 else -1
+
+                if pre < cur > nex:
+                    return m
+                
+                if pre < cur < nex:
+                    l = m+1
+                elif pre > cur > nex:
+                    h = m-1
+            return l
+        
+        t = findTop(0, n-1)
+
+
+        def findUtility(l, h, ascending):
+            while l <= h:
+                m = (l+h) // 2
+                cur = mountain_arr.get(m)
+
+                if cur == target:
+                    return m
+                
+                if cur < target:
+                    if ascending: l = m+1
+                    else: h = m-1
+                elif cur > target:
+                    if ascending: h = m-1
+                    else: l = m+1
+            
+            return -1
+        
+        ans = findUtility(0, t, True)
+        if ans != -1:
+            return ans
+        
+        return findUtility(t, n-1, False)
