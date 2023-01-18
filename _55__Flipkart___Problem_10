@@ -1,0 +1,20 @@
+import heapq
+from collections import defaultdict
+class Solution:
+    def rearrangeBarcodes(self, barcodes: List[int]) -> List[int]:
+        dic = defaultdict(int)
+
+        for barcode in barcodes:
+            dic[barcode] += 1
+
+        q = [(-freq, barcode) for barcode, freq in dic.items()]
+
+        heapq.heapify(q)
+        prev, res = None, []
+        while q:
+            f, b = heapq.heappop(q)
+            res.append(b)
+            if prev != None:
+                heapq.heappush(q, prev)
+            prev = (f+1, b) if f+1 < 0 else None
+        return res
