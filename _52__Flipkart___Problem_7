@@ -1,0 +1,46 @@
+# from collections import defaultdict
+import heapq
+class Solution:
+    def findTheCity(self, n: int, edges: list[list[int]], distanceThreshold: int) -> int:
+        graph = [[0 for j in range(n)] for i in range(n)]
+        for u, v, w in edges:
+            graph[u][v], graph[v][u] = w, w
+
+        dic = {}
+
+        def utility(s):
+            dic[s] = set()
+            q = [(0, s)]
+
+            visited = [False for i in range(n)]
+
+            distance = [float("inf") for i in range(n)]
+            distance[s] = 0
+
+            while q:
+                d, node = heapq.heappop(q)
+                if visited[node] or d > distance[node]:
+                    continue
+                
+                visited[node] = True
+                for i in range(n):
+                    if not graph[node][i] or visited[i]:
+                        continue
+                    if distance[i] > graph[node][i] + distance[node]:
+                        distance[i] = graph[node][i] + distance[node]
+                        if distance[i] <= distanceThreshold:
+                            dic[s].add(i)
+                        heapq.heappush(q, (distance[i], i))
+            return
+        
+        for i in range(n):
+            utility(i)
+        
+        resNode, resNum = None, float("inf")
+        for node, num in dic.items():
+            if len(num) < resNum:
+                resNode, resNum = node, len(num)
+            elif len(num) == resNum and node > resNode:
+                resNode, resNum = node, len(num)
+
+        return resNode      
