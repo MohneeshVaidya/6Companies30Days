@@ -1,0 +1,16 @@
+class Solution:
+    def hasAllCodes(self, s: str, k: int) -> bool:
+        m = len(s)
+        if k >= m:
+            return False
+        
+        dic = set()
+        tmpStr = ""
+        for i in range(k):
+            tmpStr += s[i]
+        dic.add(tmpStr)
+        for i in range(k, m):
+            tmpStr = tmpStr[1:]+s[i]
+            dic.add(tmpStr)
+        
+        return len(dic) == 2**k
