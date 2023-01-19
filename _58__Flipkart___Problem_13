@@ -1,0 +1,19 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        res, m, n = 0, len(grid), len(grid[0])
+
+        def utility(r, c):
+            if r < 0 or r >= m or c < 0 or c >= n or not grid[r][c]:
+                return 0
+
+            grid[r][c] = 0
+            return 1 + utility(r+1, c) + utility(r, c+1) + utility(r-1, c) + utility(r, c-1)
+        
+
+        for i in range(m):
+            for j in range(n):
+                if not grid[i][j]:
+                    continue
+                res = max(res, utility(i, j))
+        
+        return res
