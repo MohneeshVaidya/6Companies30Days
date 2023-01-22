@@ -1,0 +1,31 @@
+class Solution:
+    def maximumGood(self, statements: List[List[int]]) -> int:
+        ans, n = 0, len(statements)
+
+        def isValid(good):
+            for i, x in enumerate(good):
+                if not x:
+                    continue
+                for j in range(n):
+                    if statements[i][j] == 2:
+                        continue
+                    elif statements[i][j] != good[j]:
+                        return False
+            return True
+
+        def dfs(good, i, cnt):
+            nonlocal ans
+            if i == n:
+                if isValid(good):
+                    ans = max(ans, cnt)
+                return
+            
+            good.append(0)
+            dfs(good, i+1, cnt)
+            good[-1] = 1
+            dfs(good, i+1, cnt+1)
+            good.pop()
+        
+        dfs([], 0, 0)
+
+        return ans
