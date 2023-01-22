@@ -1,0 +1,44 @@
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        if len(nums) == 1:
+            return nums
+
+        dic, arr = {}, []
+        for x in nums:
+            if x not in dic:
+                dic[x] = 0
+                arr.append(x)
+            dic[x] += 1
+
+        nums.clear()
+        
+        def mergeSort(arr):
+            if len(arr) <= 1:
+                return arr
+            
+            m = (len(arr)-1) // 2
+            arr1 = mergeSort(arr[:m+1])
+            arr2 = mergeSort(arr[m+1:])
+            return merge(arr1, arr2)
+                    
+        def sort(arr1, arr2):
+            i, j = 0, 0
+            arr = []
+            while i < len(arr1) and j < len(arr2):
+                if arr1[i] <= arr2[j]:
+                    arr.append(arr1[i])
+                    i += 1
+                else:
+                    arr.append(arr2[j])
+                    j += 1
+            arr.extend(arr1[i:])
+            arr.extend(arr2[j:])
+            return arr
+        
+
+        arr = mergeSort(arr)
+        for x in arr:
+            nums.extend([x]*dic[x])
+        del arr
+        del dic
+        return nums
