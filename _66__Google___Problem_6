@@ -1,0 +1,15 @@
+class Solution:
+    def distinctEchoSubstrings(self, text: str) -> int:
+        n = len(text)
+        if n == 1:
+            return 0
+        res = set()
+        for l in range(2, n+1, 2):
+            for j in range(l-1, n):
+                i = j-l+1
+                tmp = text[i : j+1]
+                m = (l-1)//2
+                if tmp[0:m+1] == tmp[m+1:]:
+                    res.add(tmp)
+        
+        return len(res)
