@@ -1,0 +1,27 @@
+class Solution:
+    def countDistinct(self, nums: List[int], k: int, p: int) -> int:
+        n = len(nums)
+        res = set()
+
+        def utility(i, j, arr):
+            if i == n:
+                res.add(arr)
+                return
+            if nums[i] % p == 0:
+                if j < k:
+                    res.add(arr)
+                    utility(i+1, j+1, arr + (nums[i],))
+                else:
+                    res.add(arr)
+            else:
+                res.add(arr)
+                utility(i+1, j, arr + (nums[i],))
+            
+            if not arr:
+                utility(i+1, j, arr)
+
+        
+        utility(0, 0, ())
+
+        res.discard(())
+        return len(res)
