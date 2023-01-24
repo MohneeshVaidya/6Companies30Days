@@ -1,0 +1,29 @@
+from sortedcontainers import SortedList
+class Solution:
+
+    def __init__(self, w: List[int]):
+        self._arr = SortedList([w[0]])
+        for i in range(1, len(w)):
+            self._arr.add(w[i]+self._arr[i-1])
+        
+    def pickIndex(self) -> int:
+        from random import randint
+        
+        x = randint(1, self._arr[-1])
+
+        # def binarySearch(l, h):
+        #     while l < h:
+        #         m = (l+h)//2
+        #         if self._arr[m] == x:
+        #             return m
+        #         elif self._arr[m] < x:
+        #             l += 1
+        #         else:
+        #             h -= 1
+        #     return l
+        
+        return self._arr.bisect_left(x)
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
