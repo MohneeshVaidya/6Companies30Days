@@ -1,0 +1,28 @@
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        import heapq
+
+        n = len(grid)
+
+        def valid(x, y):
+            return 0 <= x < n and 0 <= y < n
+
+        dist = [[float("inf") for j in range(n)] for i in range(n)]
+        visited = [[False for j in range(n)] for i in range(n)]
+        q = [(grid[0][0], (0, 0))]
+        dist[0][0] = grid[0][0]
+
+        while q:
+            d, (r, c) = heapq.heappop(q)
+            if visited[r][c] or d > dist[r][c]:
+                continue
+            visited[r][c] = True
+            for x, y in [(r-1, c), (r, c+1), (r+1, c), (r, c-1)]:
+                if not valid(x, y):
+                    continue
+                if dist[x][y] > max(dist[r][c], grid[x][y]):
+                    dist[x][y] = max(dist[r][c], grid[x][y])
+                    heapq.heappush(q, (dist[x][y], (x, y)))
+        
+        return dist[n-1][n-1]
+        
