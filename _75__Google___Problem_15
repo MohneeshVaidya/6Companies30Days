@@ -1,0 +1,27 @@
+class Solution:
+    def maxCompatibilitySum(self, students: List[List[int]], mentors: List[List[int]]) -> int:
+        m, n = len(students), len(students[0])
+
+        taken = [False for i in range(m)]
+    
+        def cScore(arr1, arr2):
+            cnt = 0
+            for i in range(n):
+                if arr1[i] == arr2[i]:
+                    cnt += 1
+            return cnt
+
+        def utility(i):
+            if i == m:
+                return 0
+            res = 0
+            for j in range(m):
+                if taken[j]:
+                    continue
+                taken[j] = True
+                res = max(res, cScore(students[i], mentors[j]) + utility(i+1))
+                taken[j] = False
+            return res
+
+
+        return utility(0)
