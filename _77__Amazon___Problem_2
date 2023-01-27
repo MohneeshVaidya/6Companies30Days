@@ -1,0 +1,22 @@
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        from collections import defaultdict
+        graph = defaultdict(list)
+        for u, v, w in flights:
+            graph[u].append((v, w))
+        
+        dist = [float("inf") for i in range(n)]
+        q = [(0, src)]
+
+        while q and k >= 0:
+            s = len(q)
+            while s:
+                d, node = q.pop(0)
+                for i, cost in graph[node]:
+                    if dist[i] > d + cost:
+                        dist[i] = d + cost
+                        q.append((dist[i], i))
+                s -= 1
+            k -= 1
+        
+        return -1 if dist[dst] == float("inf") else dist[dst]
