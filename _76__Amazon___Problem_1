@@ -1,0 +1,21 @@
+from random import shuffle
+from copy import deepcopy
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        self._original = deepcopy(nums)
+        self._arr = deepcopy(self._original)
+
+    def reset(self) -> List[int]:
+        self._arr = deepcopy(self._original)
+        return self._arr
+
+    def shuffle(self) -> List[int]:
+        shuffle(self._arr)
+        return self._arr
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(nums)
+# param_1 = obj.reset()
+# param_2 = obj.shuffle()
