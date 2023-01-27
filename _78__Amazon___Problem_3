@@ -1,0 +1,14 @@
+class Solution:
+    def maxUniqueSplit(self, s: str) -> int:
+        res = set()
+
+        def utility(s, mp):
+            nonlocal res
+            if not s:
+                res = mp if len(mp) > len(res) else res
+                return
+            for i in range(0, len(s)):
+                utility(s[i+1:], mp | {s[:i+1]})
+        
+        utility(s, set())
+        return len(res)
