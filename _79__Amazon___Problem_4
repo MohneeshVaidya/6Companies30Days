@@ -1,0 +1,42 @@
+from collections import defaultdict
+from sortedcontainers import SortedList
+class TweetCounts:
+
+    def __init__(self):
+        self.__dic = defaultdict(SortedList)
+
+    def recordTweet(self, tweetName: str, time: int) -> None:
+        self.__dic[tweetName].add(time)
+
+    def getTweetCountsPerFrequency(self, freq: str, tweetName: str, startTime: int, endTime: int) -> List[int]:
+        res = []
+        def utility(diff):
+            s, e, tmp = startTime, (startTime + diff - 1) if (startTime + diff - 1) <= endTime else endTime, 0
+            while s <= endTime:
+                l, h = self.__dic[tweetName].bisect_left(s), self.__dic[tweetName].bisect_right(e)
+                res.append(h-l)
+                s, e = e + 1, (e + diff) if e + diff <= endTime else endTime
+
+
+        if freq == "minute":
+            utility(60)
+            return res
+
+        if freq == "hour":
+            utility(3600)
+            return res
+        
+        if freq == "day":
+            utility(86400)
+            return res
+
+
+# Your TweetCounts object will be instantiated and called as such:
+# obj = TweetCounts()
+# obj.recordTweet(tweetName,time)
+# param_2 = obj.getTweetCountsPerFrequency(freq,tweetName,startTime,endTime)
+
+# Your TweetCounts object will be instantiated and called as such:
+# obj = TweetCounts()
+# obj.recordTweet(tweetName,time)
+# param_2 = obj.getTweetCountsPerFrequency(freq,tweetName,startTime,endTime)
