@@ -1,0 +1,21 @@
+class Solution:
+    def mostPopularCreator(self, creators: List[str], ids: List[str], views: List[int]) -> List[List[str]]:
+        maxViews, popul, Id = -1, {}, {}
+        for i in range(len(creators)):
+            if creators[i] not in popul:
+                popul[creators[i]] = views[i]
+                Id[creators[i]] = [ids[i], views[i]]
+            else:
+                popul[creators[i]] += views[i]
+                if Id[creators[i]][1] == views[i] and Id[creators[i]][0] > ids[i]:
+                    Id[creators[i]][0] = ids[i]
+                elif Id[creators[i]][1] < views[i]:
+                    Id[creators[i]] = [ids[i], views[i]]
+            maxViews = max(maxViews, popul[creators[i]])
+        
+        res = []
+        for creator, popularity in popul.items():
+            if popularity == maxViews:
+                res.append([creator, Id[creator][0]])
+        
+        return res
