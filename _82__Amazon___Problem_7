@@ -1,0 +1,14 @@
+from queue import Queue as Q
+class Solution:
+    def predictPartyVictory(self, senate: str) -> str:
+        n, radiant, dire = len(senate), Q(), Q()
+        for i, x in enumerate(senate):
+            if x == "R": radiant.put_nowait(i)
+            else: dire.put_nowait(i)
+        
+        while not radiant.empty() and not dire.empty():
+            rIdx, dIdx = radiant.get_nowait(), dire.get_nowait()
+            if rIdx < dIdx: radiant.put_nowait(rIdx + n)
+            else: dire.put_nowait(dIdx + n)
+        
+        return "Radiant" if not radiant.empty() else "Dire"
