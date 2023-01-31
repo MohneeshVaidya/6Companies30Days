@@ -1,0 +1,29 @@
+class Solution:
+    def numMatchingSubseq(self, s: str, words: list[str]) -> int:
+        m, res, dic = len(s), 0, {}
+
+        def utility(word):
+            nonlocal s, m
+            n = len(word)
+            
+            i, j = 0, 0
+            while i < m and j < n:
+                while s[i] != word[j]:
+                    i += 1
+                    if i == m: return False
+                i, j = i+1, j+1
+            
+            return True if j == n else False
+        
+        for word in words:
+            if word in dic:
+                res += dic[word]
+                continue
+            
+            if utility(word):
+                res += 1
+                dic[word] = 1
+            else:
+                dic[word] = 0
+        
+        return res
